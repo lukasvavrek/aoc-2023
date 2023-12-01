@@ -34,11 +34,7 @@ def process_line(line):
             i += 1
 
 def first_number(line):
-    for ch in line:
-        if ch.isnumeric():
-            return int(ch)
-
-    return 0
+    return int(next(filter(lambda ch: ch.isnumeric(), line)))
 
 t1 = 0
 t2 = 0

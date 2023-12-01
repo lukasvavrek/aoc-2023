@@ -1,7 +1,6 @@
 #!/usr/bin/env stack
 {- stack script
    --resolver lts-21.22
-   --package acme-missiles
 -}
 
 -- 56397
@@ -13,17 +12,16 @@ main :: IO ()
 main = do
     input <- getContents
     let linesList = lines input
-
-    let sum = foldl (+) 0 $ map getDigit linesList
-    putStrLn $ show sum
+    let calibrationSum  = sum $ map getDigit linesList
+    print calibrationSum
 
 getDigit :: String -> Int
 getDigit str = 
-    10 * findFirstNumericCharacter str + findLastNumericCharacter str
+    10 * findFirstNumber str + findLastNumber str
 
-findFirstNumericCharacter :: String -> Int
-findFirstNumericCharacter str = digitToInt $ head $ filter isDigit str
+findFirstNumber :: String -> Int
+findFirstNumber str = digitToInt $ head $ filter isDigit str
 
-findLastNumericCharacter :: String -> Int
-findLastNumericCharacter str = findFirstNumericCharacter $ reverse str
+findLastNumber :: String -> Int
+findLastNumber str = findFirstNumber $ reverse str
 
