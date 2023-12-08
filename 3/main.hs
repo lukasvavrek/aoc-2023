@@ -22,7 +22,7 @@ main = do
   let grid = map cellsFromLine $ zip [0 ..] linesList
   let numbers = concatMap parseNumbersFromLine grid
 
-  let p1Nums = map (n) $ filter (\number -> not . all (\c -> c == '.') $ numberNeighborsAsString grid number) numbers
+  let p1Nums = map n $ filter (not . all (== '.') . numberNeighborsAsString grid) numbers
   -- print p1Nums
   print $ sum p1Nums
 
@@ -43,21 +43,19 @@ data Cell = Cell {coord :: Coord, char :: Char} deriving (Show, Eq)
 data Number = Number {n :: Int, c :: Coord} deriving (Show, Eq)
 
 parseNumbersFromLine :: [Cell] -> [Number]
-parseNumbersFromLine cells = unsafePerformIO $ do
-  results <- numbers [] cells
-  return results
+parseNumbersFromLine cells = unsafePerformIO $ do numbers [] cells
   where
     numbers :: [Number] -> [Cell] -> IO [Number]
     numbers acc [] = return acc
     numbers acc (c : cs) = do
-      case isDigit $ char c of
-        True -> do
+      if isDigit $ char c
+        then do
           let toConvert = c : takeWhile (isDigit . char) cs
           let rest = dropWhile (isDigit . char) cs
           let number = cellToNumbers toConvert
 
           numbers (number : acc) rest
-        _ -> numbers acc cs
+        else numbers acc cs
 
 cellToNumbers :: [Cell] -> Number
 cellToNumbers cells = foldl accumulate base cells
