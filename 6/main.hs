@@ -17,6 +17,10 @@ main = do
 
   print margin
 
+  let mainRound = toRound (joinToInt times, joinToInt distances)
+
+  print $ calculateRound mainRound
+
 calculateRound :: Round -> Int
 calculateRound round  = length $ filter (==True) $ map (isWinning round) [1 .. time round]
 
@@ -28,3 +32,6 @@ parseLine line = map (\x -> read x :: Int) $ drop 1 $ words line
 
 toRound :: (Int, Int) -> Round
 toRound (time, distance) = Round time distance
+
+joinToInt :: [Int] -> Int
+joinToInt xs = read $ concatMap show xs :: Int
